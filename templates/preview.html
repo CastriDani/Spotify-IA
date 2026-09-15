@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Tu selección · Sonic AI{% endblock %}
+{% block main_class %}inner-page{% endblock %}
+{% block content %}
+<a href="{{ url_for('index') }}" class="back-link">{{ icon('back') }} Volver a buscar</a>
+<header class="page-heading"><span class="section-kicker">UN SONIDO PARA TI</span><h1>Tu momento, <span class="gradient-text">tu música.</span></h1><p>Resultados para <span class="query">“{{ entrada }}”</span></p></header>
+{% if mensaje %}<div class="notice" role="status">{{ mensaje|safe }}</div>{% endif %}
+{% if canciones %}
+<form method="POST" class="playlist-form" data-loading="Guardando tu selección…">
+    <section class="track-panel" aria-label="Canciones encontradas">
+        <div class="panel-heading"><div><strong>{{ canciones|length }} canciones</strong><span id="selection-count" class="muted" aria-live="polite">{{ canciones|length }} seleccionadas</span></div><label class="select-all"><input id="select-all" type="checkbox" checked> Seleccionar todas</label></div>
+        <div class="track-list">
+        {% for c in canciones %}
+            <div class="track">
+                <input id="track-{{ loop.index }}" type="checkbox" name="seleccionadas" value="{{ c.uri }}" checked aria-label="Seleccionar {{ c.nombre }} de {{ c.artista }}">
+                <span class="track-number" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>
+                {% if c.imagen %}<img class="cover" src="{{ c.imagen }}" alt="Portada de {{ c.album }}" loading="lazy">{% else %}<span class="cover cover-placeholder">{{ icon('music') }}</span>{% endif %}
+                <div class="track-info"><label for="track-{{ loop.index }}">{{ c.nombre }}</label><p>{{ c.artista }} <span aria-hidden="true">·</span> {{ c.album }}</p></div>
+                {% if c.preview %}<audio controls preload="none" aria-label="Escuchar un fragmento de {{ c.nombre }}"><source src="{{ c.preview }}" type="audio/mpeg"></audio>{% else %}<span class="no-preview">Sin vista previa</span>{% endif %}
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+    <section class="actions-panel" aria-labelledby="save-title">
+        <span class="section-kicker">LLÉVATE TU MÚSICA</span><h2 id="save-title">Guarda este momento.</h2><p class="muted">Elige dónde guardar las canciones seleccionadas.</p>
+        <div class="save-options">
+            <div class="save-option"><label class="radio-label"><input type="radio" name="accion" value="nueva" checked> Crear nueva playlist</label><label class="sr-only" for="nombre-playlist">Nombre de la nueva playlist</label><input id="nombre-playlist" type="text" name="nombre_playlist" placeholder="Nombre de la nueva playlist" value="IA: {{ entrada }}"></div>
+            <div class="save-option"><label class="radio-label"><input type="radio" name="accion" value="existente"> Añadir a playlist existente</label><label class="sr-only" for="playlist-existente">Playlist de destino</label><select id="playlist-existente" name="playlist_existente"><option value="">Selecciona una playlist</option>{% for p in playlists %}<option value="{{ p.id }}">{{ p.nombre }}</option>{% endfor %}</select></div>
+        </div>
+        <div class="save-footer"><span class="muted">Tu selección se guardará en Spotify.</span><button class="button primary" type="submit">{{ icon('music') }} <span>Guardar en Spotify</span></button></div>
+        <p class="loading-status" role="status" aria-live="polite"></p>
+    </section>
+</form>
+{% else %}
+<section class="empty-state"><span class="empty-icon">{{ icon('search') }}</span><h2>Aún no hay canciones para este momento.</h2><p>Prueba con otro artista, género o sensación.</p><a class="button primary" href="{{ url_for('index') }}">Explorar otro sonido {{ icon('arrow') }}</a></section>
+{% endif %}
+{% endblock %}

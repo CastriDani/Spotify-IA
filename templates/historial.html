@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Tu historial · Sonic AI{% endblock %}
+{% block main_class %}inner-page{% endblock %}
+{% block content %}
+<a href="{{ url_for('index') }}" class="back-link">{{ icon('back') }} Volver a buscar</a>
+<header class="page-heading"><span class="section-kicker">TUS MOMENTOS, EN REPEAT</span><h1>La música <span class="gradient-text">se queda.</span></h1><p>Todas las playlists que has creado, en un solo lugar.</p></header>
+{% if registros %}
+<div class="history-heading"><h2>Tus playlists</h2><span class="count-badge">{{ registros|length }}</span></div>
+<section class="history-grid" aria-label="Playlists creadas">
+    {% for r in registros %}
+    <article class="history-card"><div class="history-art" aria-hidden="true">{{ icon('music') }}<span class="sound-bars"><i></i><i></i><i></i><i></i><i></i></span></div><div class="history-content"><span class="section-kicker">{{ r.canciones }} CANCIONES</span><h2>{{ r.nombre }}</h2><p class="date">{{ r.fecha }}</p><a class="spotify-link" href="{{ r.url }}" target="_blank" rel="noopener noreferrer">Abrir en Spotify <span class="sr-only">(se abre en otra pestaña)</span>{{ icon('arrow') }}</a></div></article>
+    {% endfor %}
+</section>
+{% else %}
+<section class="empty-state"><span class="empty-icon">{{ icon('music') }}</span><h2>Tu próxima playlist empieza con una idea.</h2><p>Todavía no has creado ninguna playlist.<br>Encuentra un sonido que conecte contigo y guárdalo aquí.</p><a class="button primary" href="{{ url_for('index') }}">Crear mi primera playlist {{ icon('arrow') }}</a></section>
+{% endif %}
+{% endblock %}

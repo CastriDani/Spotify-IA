@@ -1,0 +1,32 @@
+{% macro icon(name, class='') -%}
+<svg class="icon {{ class }}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+{% if name == 'music' %}<path d="M9 18V5l10-2v13M9 8l10-2"/><ellipse cx="6" cy="18" rx="3" ry="3"/><ellipse cx="16" cy="16" rx="3" ry="3"/>
+{% elif name == 'search' %}<circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/>
+{% elif name == 'sparkles' %}<path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4L12 3ZM20 2v4m-2-2h4"/>
+{% elif name == 'history' %}<path d="M3 4v5h5M3.5 9a9 9 0 1 1-.2 5M12 7v5l3 2"/>
+{% elif name == 'arrow' %}<path d="M7 17 17 7M7 7h10v10"/>
+{% elif name == 'back' %}<path d="m10 5-7 7 7 7M3 12h18"/>
+{% endif %}
+</svg>
+{%- endmacro %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#08090f">
+    <meta name="description" content="Convierte lo que quieres sentir en tu próxima playlist. Descubre música con inteligencia artificial y guárdala en Spotify.">
+    <title>{% block title %}Sonic AI · Música para tu momento{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/ui.js') }}" defer></script>
+</head>
+<body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header shell">
+        <a class="brand" href="{{ url_for('index') }}" aria-label="Sonic AI, inicio"><span class="brand-mark">{{ icon('music') }}</span><span>SONIC <span class="brand-accent">AI</span></span></a>
+        <nav aria-label="Navegación principal"><a class="nav-link" href="{{ url_for('historial') }}" {% if request.endpoint == 'historial' %}aria-current="page"{% endif %}>{{ icon('history') }} Historial {{ icon('arrow', 'small') }}</a></nav>
+    </header>
+    <main id="contenido" class="shell {% block main_class %}{% endblock %}">{% block content %}{% endblock %}</main>
+    <footer class="site-footer shell">Hecho para quienes escuchan más allá del ruido.</footer>
+</body>
+</html>

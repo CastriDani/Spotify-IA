@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block main_class %}home{% endblock %}
+{% block content %}
+<section class="hero" aria-labelledby="hero-title">
+    <span class="eyebrow"><span class="status-dot"></span> Tu DJ personal, potenciado por IA</span>
+    <h1 id="hero-title">Música que entiende<br><span class="gradient-text">tu momento.</span></h1>
+    <p class="hero-description">Describe una sensación, una historia o un sonido. Nosotros convertimos<br class="desktop-break"> tus ideas en la playlist perfecta.</p>
+    <div class="search-area">
+        <form method="POST" class="search-form" data-loading="Buscando tu sonido…">
+            <label class="sr-only" for="entrada">¿Qué quieres escuchar?</label>
+            {{ icon('search', 'search-icon') }}
+            <input id="entrada" type="text" name="entrada" placeholder="Ej. atardecer en carretera, R&B nostálgico…" required autocomplete="off" {% if error %}aria-invalid="true" aria-describedby="search-error"{% endif %}>
+            <button class="button primary" type="submit">{{ icon('sparkles') }} <span>Crear playlist</span></button>
+        </form>
+        {% if error %}<p id="search-error" class="notice error" role="alert">{{ error }}</p>{% endif %}
+        <div class="suggestions" aria-label="Ideas para inspirarte">
+            <button class="chip" type="button" data-prompt="Noche de reggaetón">Noche de reggaetón</button>
+            <button class="chip" type="button" data-prompt="Música para concentrarme, focus y flow">Focus &amp; flow</button>
+            <button class="chip" type="button" data-prompt="Indie para viajar">Indie para viajar</button>
+        </div>
+        <form method="POST" class="surprise-form" data-loading="Buscando una sorpresa…">
+            <button class="surprise-button" type="submit" name="sorprendeme" value="1">{{ icon('sparkles') }} <span>Sorpréndeme con algo inesperado</span> {{ icon('arrow', 'small') }}</button>
+        </form>
+        <p class="loading-status" role="status" aria-live="polite"></p>
+    </div>
+</section>
+<section class="steps" aria-label="Cómo funciona">
+    <article class="step"><span class="step-number">01</span><h2>Describe</h2><p>Cuéntanos qué quieres sentir.</p></article>
+    <article class="step"><span class="step-number">02</span><h2>Descubre</h2><p>La IA encuentra tu nuevo sonido.</p></article>
+    <article class="step"><span class="step-number">03</span><h2>Conecta</h2><p>Dale play a una experiencia única.</p></article>
+</section>
+{% endblock %}
